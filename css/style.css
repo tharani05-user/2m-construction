@@ -709,8 +709,8 @@ p {
 ========================================================= */
 
 .site-logo {
-    width: 80px;
-    min-width: 80px;
+    width: 105px;
+    min-width: 105px;
 
     display: flex;
     align-items: center;
@@ -720,8 +720,8 @@ p {
 }
 
 .logo-svg {
-    width: 72px;
-    height: 72px;
+    width: 95px;
+    height: 95px;
     display: block;
 }
 
@@ -896,8 +896,8 @@ p {
 ========================================================= */
 
 .site-logo {
-    width: 80px;
-    min-width: 80px;
+    width: 105px;
+    min-width: 105px;
 
     display: flex;
     align-items: center;
@@ -906,8 +906,8 @@ p {
 }
 
 .site-logo img {
-    width: 80px;
-    height: 70px;
+    width: 105px;
+    height: 92px;
 
     display: block;
 
@@ -944,13 +944,13 @@ p {
     }
 
     .site-logo {
-        width: 78px;
-        min-width: 78px;
+        width: 100px;
+        min-width: 100px;
     }
 
     .logo-svg {
-        width: 68px;
-        height: 68px;
+        width: 90px;
+        height: 90px;
     }
 }
 
@@ -994,13 +994,13 @@ p {
     }
 
     .site-logo {
-        width: 72px;
-        min-width: 72px;
+        width: 95px;
+        min-width: 95px;
     }
 
     .logo-svg {
-        width: 64px;
-        height: 64px;
+        width: 85px;
+        height: 85px;
     }
 
 
@@ -1074,13 +1074,13 @@ p {
     }
 
     .site-logo {
-        width: 65px;
-        min-width: 65px;
+        width: 85px;
+        min-width: 85px;
     }
 
     .logo-svg {
-        width: 58px;
-        height: 58px;
+        width: 76px;
+        height: 76px;
     }
 
     .header-quote-btn {
@@ -1115,13 +1115,13 @@ p {
     }
 
     .site-logo {
-        width: 58px;
-        min-width: 58px;
+        width: 76px;
+        min-width: 76px;
     }
 
     .logo-svg {
-        width: 53px;
-        height: 53px;
+        width: 68px;
+        height: 68px;
     }
 
     .header-quote-btn {
@@ -2744,7 +2744,7 @@ p {
 }
 
 .footer-logo img {
-    width: 88px;
+    width: 115px;
     height: auto;
 
     display: block;
@@ -11887,8 +11887,8 @@ p {
 }
 
 .quote-logo img {
-    width: 65px;
-    height: 65px;
+    width: 100px;
+    height: 80px;
 
     display: block;
 }
@@ -14113,7 +14113,7 @@ p {
     }
 
     .footer-logo img {
-        width: 80px;
+        width: 100px;
     }
 
     .footer-brand p {
@@ -20789,8 +20789,8 @@ p {
     }
 
     .quote-logo img {
-        width: 58px;
-        height: 58px;
+        width: 75px;
+        height: 75px;
     }
 
     .quote-back-home {
@@ -21001,8 +21001,8 @@ p {
     }
 
     .quote-logo img {
-        width: 52px;
-        height: 52px;
+        width: 68px;
+        height: 68px;
     }
 
     .quote-back-home {
@@ -21336,8 +21336,8 @@ p {
     }
 
     .quote-logo img {
-        width: 46px;
-        height: 46px;
+        width: 60px;
+        height: 60px;
     }
 
     .quote-back-home {
@@ -21635,8 +21635,8 @@ p {
     }
 
     .quote-logo img {
-        width: 42px;
-        height: 42px;
+        width: 55px;
+        height: 55px;
     }
 
     .quote-back-home span {
