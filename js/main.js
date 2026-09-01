@@ -1158,6 +1158,358 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     );
 
+
+    /* =====================================================
+       CAREER APPLICATION FORM
+    ===================================================== */
+
+    const careerForm =
+        document.getElementById(
+            "careerCvForm"
+        );
+
+    const careerFormMessage =
+        document.getElementById(
+            "careerFormMessage"
+        );
+
+    const careerSubmitButton =
+        careerForm
+            ? careerForm.querySelector(
+                ".careers-final-submit"
+            )
+            : null;
+
+    const careerFileInput =
+        document.getElementById(
+            "careerCv"
+        );
+
+    const careerSuccessModal =
+        document.getElementById(
+            "careerSuccessModal"
+        );
+
+    const careerSuccessClose =
+        document.getElementById(
+            "careerSuccessClose"
+        );
+
+    const careerSuccessBtn =
+        document.getElementById(
+            "careerSuccessBtn"
+        );
+
+    const careerSuccessOverlay =
+        careerSuccessModal
+            ? careerSuccessModal.querySelector(
+                ".career-success-overlay"
+            )
+            : null;
+
+    const careerAjaxEndpoint =
+        "https://formsubmit.co/ajax/2mconstruction@gmail.com";
+
+    const careerSubmitLabel =
+        careerSubmitButton
+            ? careerSubmitButton.innerHTML
+            : "";
+
+    const allowedCareerExtensions = [
+        "pdf",
+        "doc",
+        "docx"
+    ];
+
+    const maxCareerFileSize =
+        5 * 1024 * 1024;
+
+    let careerSuccessLastFocus = null;
+
+    function setCareerFormMessage(message, isError) {
+
+        if (!careerFormMessage) {
+            return;
+        }
+
+        careerFormMessage.textContent = message || "";
+        careerFormMessage.classList.toggle(
+            "is-error",
+            Boolean(isError)
+        );
+
+    }
+
+    function validateCareerFile(file) {
+
+        if (!file) {
+            return "Please upload your CV.";
+        }
+
+        const fileName = String(file.name || "");
+        const fileExtension = fileName.includes(".")
+            ? fileName.split(".").pop().toLowerCase()
+            : "";
+
+        if (!allowedCareerExtensions.includes(fileExtension)) {
+            return "Please upload a PDF, DOC or DOCX file.";
+        }
+
+        if (file.size > maxCareerFileSize) {
+            return "Your CV must be 5MB or smaller.";
+        }
+
+        return "";
+
+    }
+
+    function openCareerSuccessModal() {
+
+        if (!careerSuccessModal) {
+            return;
+        }
+
+        careerSuccessLastFocus =
+            document.activeElement;
+
+        careerSuccessModal.classList.add("active");
+        careerSuccessModal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        document.body.style.overflow = "hidden";
+
+    }
+
+    function closeCareerSuccessModal() {
+
+        if (!careerSuccessModal) {
+            return;
+        }
+
+        careerSuccessModal.classList.remove("active");
+        careerSuccessModal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        document.body.style.overflow = "";
+
+        if (
+            careerSuccessLastFocus &&
+            typeof careerSuccessLastFocus.focus === "function"
+        ) {
+            careerSuccessLastFocus.focus();
+        }
+
+        careerSuccessLastFocus = null;
+
+    }
+
+    if (careerFileInput) {
+
+        careerFileInput.addEventListener(
+            "change",
+            function () {
+
+                const file =
+                    this.files && this.files[0]
+                        ? this.files[0]
+                        : null;
+
+                if (!file) {
+                    setCareerFormMessage("", false);
+                    return;
+                }
+
+                const validationMessage =
+                    validateCareerFile(file);
+
+                if (validationMessage) {
+
+                    setCareerFormMessage(
+                        validationMessage,
+                        true
+                    );
+
+                    this.value = "";
+                    return;
+
+                }
+
+                setCareerFormMessage("", false);
+
+            }
+        );
+
+    }
+
+    if (careerForm) {
+
+        careerForm.addEventListener(
+            "submit",
+            async function (event) {
+
+                event.preventDefault();
+
+                if (!careerForm.reportValidity()) {
+                    return;
+                }
+
+                const selectedFile =
+                    careerFileInput &&
+                    careerFileInput.files &&
+                    careerFileInput.files[0]
+                        ? careerFileInput.files[0]
+                        : null;
+
+                const validationMessage =
+                    validateCareerFile(selectedFile);
+
+                if (validationMessage) {
+
+                    setCareerFormMessage(
+                        validationMessage,
+                        true
+                    );
+
+                    return;
+
+                }
+
+                setCareerFormMessage("", false);
+
+                if (!careerSubmitButton) {
+                    return;
+                }
+
+                careerSubmitButton.disabled = true;
+                careerSubmitButton.innerHTML = `
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    Submitting...
+                `;
+
+                try {
+
+                    const formData =
+                        new FormData(careerForm);
+
+                    const response =
+                        await fetch(
+                            careerAjaxEndpoint,
+                            {
+                                method: "POST",
+                                headers: {
+                                    Accept: "application/json"
+                                },
+                                body: formData
+                            }
+                        );
+
+                    let responseData = null;
+
+                    try {
+                        responseData =
+                            await response.json();
+                    } catch (jsonError) {
+                        responseData = null;
+                    }
+
+                    if (
+                        responseData &&
+                        responseData.success === false
+                    ) {
+
+                        throw new Error(
+                            responseData.message ||
+                            "Something went wrong while submitting your application. Please try again."
+                        );
+
+                    }
+
+                    if (!response.ok) {
+
+                        const errorMessage =
+                            responseData &&
+                            responseData.message
+                                ? responseData.message
+                                : "Something went wrong while submitting your application. Please try again.";
+
+                        throw new Error(errorMessage);
+
+                    }
+
+                    careerForm.reset();
+                    setCareerFormMessage("", false);
+                    openCareerSuccessModal();
+
+                } catch (error) {
+
+                    setCareerFormMessage(
+                        "Something went wrong while submitting your application. Please try again.",
+                        true
+                    );
+
+                } finally {
+
+                    careerSubmitButton.disabled = false;
+                    careerSubmitButton.innerHTML =
+                        careerSubmitLabel;
+
+                }
+
+            }
+        );
+
+    }
+
+    if (careerSuccessClose) {
+
+        careerSuccessClose.addEventListener(
+            "click",
+            closeCareerSuccessModal
+        );
+
+    }
+
+    if (careerSuccessBtn) {
+
+        careerSuccessBtn.addEventListener(
+            "click",
+            closeCareerSuccessModal
+        );
+
+    }
+
+    if (careerSuccessOverlay) {
+
+        careerSuccessOverlay.addEventListener(
+            "click",
+            closeCareerSuccessModal
+        );
+
+    }
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Escape" &&
+                careerSuccessModal &&
+                careerSuccessModal.classList.contains(
+                    "active"
+                )
+            ) {
+
+                closeCareerSuccessModal();
+
+            }
+
+        }
+    );
+
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -1196,6 +1548,166 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
         });
+
+    });
+
+});
+
+/* =========================================================
+   CONTACT - PROJECT ENQUIRY FORM
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const projectEnquiryForm =
+        document.getElementById("projectEnquiryForm");
+
+    const contactFormMessage =
+        document.getElementById("contactFormMessage");
+
+    const contactSubmitButton =
+        projectEnquiryForm
+            ? projectEnquiryForm.querySelector(".contact-submit-btn")
+            : null;
+
+    const contactSuccessModal =
+        document.getElementById("contactSuccessModal");
+
+    const contactSuccessClose =
+        document.getElementById("contactSuccessClose");
+
+    const contactSuccessBtn =
+        document.getElementById("contactSuccessBtn");
+
+    const contactSuccessOverlay =
+        contactSuccessModal
+            ? contactSuccessModal.querySelector(".contact-success-overlay")
+            : null;
+
+    const contactAjaxEndpoint =
+        "https://formsubmit.co/ajax/2mconstruction@gmail.com";
+
+    const contactSubmitLabel =
+        contactSubmitButton ? contactSubmitButton.innerHTML : "";
+
+    function setContactFormMessage(message) {
+
+        if (contactFormMessage) {
+            contactFormMessage.textContent = message || "";
+        }
+
+    }
+
+    function openContactSuccessModal() {
+
+        if (!contactSuccessModal) {
+            return;
+        }
+
+        contactSuccessModal.classList.add("active");
+        contactSuccessModal.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+
+    }
+
+    function closeContactSuccessModal() {
+
+        if (!contactSuccessModal) {
+            return;
+        }
+
+        contactSuccessModal.classList.remove("active");
+        contactSuccessModal.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+
+    }
+
+    if (projectEnquiryForm && contactSubmitButton) {
+
+        projectEnquiryForm.addEventListener("submit", async function (event) {
+
+            event.preventDefault();
+
+            if (!projectEnquiryForm.reportValidity()) {
+                return;
+            }
+
+            setContactFormMessage("");
+            contactSubmitButton.disabled = true;
+            contactSubmitButton.innerHTML = `
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                Sending...
+            `;
+
+            try {
+
+                const response = await fetch(contactAjaxEndpoint, {
+                    method: "POST",
+                    headers: {
+                        Accept: "application/json"
+                    },
+                    body: new FormData(projectEnquiryForm)
+                });
+
+                let responseData = {};
+
+                try {
+                    responseData = await response.json();
+                } catch (error) {
+                    responseData = {};
+                }
+
+                if (
+                    !response.ok ||
+                    responseData.success === false ||
+                    responseData.success === "false" ||
+                    !responseData.success
+                ) {
+                    throw new Error("Contact enquiry submission failed");
+                }
+
+                projectEnquiryForm.reset();
+                setContactFormMessage("");
+                openContactSuccessModal();
+
+            } catch (error) {
+
+                setContactFormMessage(
+                    "Something went wrong while sending your enquiry. Please try again."
+                );
+
+            } finally {
+
+                contactSubmitButton.disabled = false;
+                contactSubmitButton.innerHTML = contactSubmitLabel;
+
+            }
+
+        });
+
+    }
+
+    if (contactSuccessClose) {
+        contactSuccessClose.addEventListener("click", closeContactSuccessModal);
+    }
+
+    if (contactSuccessBtn) {
+        contactSuccessBtn.addEventListener("click", closeContactSuccessModal);
+    }
+
+    if (contactSuccessOverlay) {
+        contactSuccessOverlay.addEventListener("click", closeContactSuccessModal);
+    }
+
+    document.addEventListener("keydown", function (event) {
+
+        if (
+            event.key === "Escape" &&
+            contactSuccessModal &&
+            contactSuccessModal.classList.contains("active")
+        ) {
+            closeContactSuccessModal();
+        }
 
     });
 
@@ -1260,8 +1772,26 @@ document.addEventListener("DOMContentLoaded", function () {
     const quoteForm =
         document.getElementById("quoteRequestForm");
 
-    const successMessage =
+    const quoteSuccessMessage =
         document.getElementById("quoteSuccessMessage");
+
+    const quoteSuccessModal =
+        document.getElementById("quoteSuccessModal");
+
+    const quoteSuccessClose =
+        document.getElementById("quoteSuccessClose");
+
+    const quoteSuccessBtn =
+        document.getElementById("quoteSuccessBtn");
+
+    const quoteFileList =
+        document.getElementById("quoteFileList");
+
+    const submissionEndpoint =
+        quoteForm ? (
+            quoteForm.getAttribute("action") ||
+            "https://formsubmit.co/ajax/2mconstruction@gmail.com"
+        ) : "";
 
 
     if (!quoteForm) {
@@ -1269,82 +1799,232 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    const submitButton =
+        quoteForm.querySelector(".quote-submit-btn");
+
+    let isSubmitting = false;
+
+
+    function clearQuoteStatusMessage() {
+
+        if (!quoteSuccessMessage) {
+            return;
+        }
+
+        quoteSuccessMessage.textContent = "";
+        quoteSuccessMessage.style.color = "";
+
+    }
+
+
+    function showQuoteErrorMessage(message) {
+
+        if (!quoteSuccessMessage) {
+            return;
+        }
+
+        quoteSuccessMessage.textContent = message;
+        quoteSuccessMessage.style.color = "#b42318";
+
+    }
+
+
+    function clearQuoteFileList() {
+
+        if (quoteFileList) {
+            quoteFileList.innerHTML = "";
+        }
+
+    }
+
+
+    function openQuoteSuccessModal() {
+
+        if (!quoteSuccessModal) {
+            return;
+        }
+
+        quoteSuccessModal.classList.add("active");
+        quoteSuccessModal.setAttribute("aria-hidden", "false");
+
+        document.body.style.overflow = "hidden";
+
+        if (quoteSuccessClose) {
+            window.setTimeout(function () {
+                quoteSuccessClose.focus();
+            }, 0);
+        }
+
+    }
+
+
+    function closeQuoteSuccessModal() {
+
+        if (!quoteSuccessModal) {
+            return;
+        }
+
+        quoteSuccessModal.classList.remove("active");
+        quoteSuccessModal.setAttribute("aria-hidden", "true");
+
+        document.body.style.overflow = "";
+
+    }
+
+
+    function restoreSubmitButton() {
+
+        if (!submitButton) {
+            return;
+        }
+
+        submitButton.disabled = false;
+        submitButton.innerHTML = submitButton.dataset.originalHtml ||
+            "Request My Quote";
+
+    }
+
+
+    if (submitButton) {
+        submitButton.dataset.originalHtml = submitButton.innerHTML;
+    }
+
+
     quoteForm.addEventListener("submit", async function (event) {
 
         event.preventDefault();
 
+        clearQuoteStatusMessage();
 
-        const submitButton =
-            quoteForm.querySelector(
-                ".quote-submit-btn"
-            );
+        if (isSubmitting) {
+            return;
+        }
 
+        if (!quoteForm.reportValidity()) {
+            return;
+        }
+
+        if (!submitButton) {
+            return;
+        }
+
+        isSubmitting = true;
 
         const originalText =
+            submitButton.dataset.originalHtml ||
             submitButton.innerHTML;
 
-
+        submitButton.dataset.originalHtml = originalText;
         submitButton.disabled = true;
+        submitButton.innerHTML = "Sending...";
 
-        submitButton.innerHTML = `
-            <i class="fa-solid fa-spinner fa-spin"></i>
-            Submitting...
-        `;
-
-
-        const formData =
-            new FormData(quoteForm);
+        const formData = new FormData(quoteForm);
 
 
         try {
 
-            /*
-             * BACKEND ENDPOINT
-             *
-             * Example:
-             *
-             * const response = await fetch(
-             *     "backend/submit-quote.php",
-             *     {
-             *         method: "POST",
-             *         body: formData
-             *     }
-             * );
-             *
-             */
+            const response = await fetch(
+                submissionEndpoint,
+                {
+                    method: "POST",
+                    headers: {
+                        Accept: "application/json"
+                    },
+                    body: formData
+                }
+            );
 
+            const responseText = await response.text();
 
-            /*
-             * Temporary frontend success
-             */
+            let responseData = null;
 
-            await new Promise(function (resolve) {
-                setTimeout(resolve, 1200);
-            });
+            try {
+                responseData = responseText ? JSON.parse(responseText) : null;
+            } catch (parseError) {
+                responseData = null;
+            }
 
+            const submissionSucceeded =
+                response.ok &&
+                (
+                    (responseData && responseData.success) ||
+                    (!responseData && /success|thank/i.test(responseText))
+                );
 
-            successMessage.textContent =
-                "Your quote request has been submitted successfully.";
+            if (!submissionSucceeded) {
+                throw new Error(
+                    (responseData && responseData.message) ||
+                    responseText ||
+                    "Something went wrong while submitting your request."
+                );
+            }
 
             quoteForm.reset();
-
-            document.getElementById(
-                "quoteFileList"
-            ).innerHTML = "";
+            clearQuoteFileList();
+            clearQuoteStatusMessage();
+            closeQuoteSuccessModal();
+            openQuoteSuccessModal();
 
 
         } catch (error) {
 
-            successMessage.textContent =
-                "Something went wrong. Please try again.";
+            showQuoteErrorMessage(
+                "Something went wrong while submitting your request. Please try again."
+            );
+
+        } finally {
+
+            isSubmitting = false;
+            restoreSubmitButton();
 
         }
 
 
-        submitButton.disabled = false;
+    });
 
-        submitButton.innerHTML =
-            originalText;
+
+    if (quoteSuccessClose) {
+
+        quoteSuccessClose.addEventListener("click", closeQuoteSuccessModal);
+
+    }
+
+
+    if (quoteSuccessBtn) {
+
+        quoteSuccessBtn.addEventListener("click", closeQuoteSuccessModal);
+
+    }
+
+
+    if (quoteSuccessModal) {
+
+        const quoteSuccessOverlay =
+            quoteSuccessModal.querySelector(".quote-success-overlay");
+
+        if (quoteSuccessOverlay) {
+
+            quoteSuccessOverlay.addEventListener(
+                "click",
+                closeQuoteSuccessModal
+            );
+
+        }
+
+    }
+
+
+    document.addEventListener("keydown", function (event) {
+
+        if (
+            event.key === "Escape" &&
+            quoteSuccessModal &&
+            quoteSuccessModal.classList.contains("active")
+        ) {
+
+            closeQuoteSuccessModal();
+
+        }
 
     });
 
