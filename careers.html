@@ -1186,8 +1186,15 @@
                     </div>
 
 
-                    <form class="careers-final-form" id="careerCvForm" action="#" method="POST"
+                    <form class="careers-final-form" id="careerCvForm"
+                        action="https://formsubmit.co/2mconstruction@gmail.com" method="POST"
                         enctype="multipart/form-data">
+
+                        <input type="hidden" name="_subject" value="New Career Application - 2M Construction">
+
+                        <input type="hidden" name="_template" value="table">
+
+                        <input type="hidden" name="_captcha" value="false">
 
                         <div class="career-form-row">
 
@@ -1233,7 +1240,7 @@
                                 Position Interested In
                             </label>
 
-                            <select id="careerPosition" name="position">
+                            <select id="careerPosition" name="position" required>
 
                                 <option value="" selected>
                                     Select a position
@@ -1323,6 +1330,46 @@
         </div>
 
     </section>
+
+
+    <!-- =========================================================
+     CAREER APPLICATION SUCCESS POPUP
+========================================================= -->
+
+    <div class="career-success-modal" id="careerSuccessModal" aria-hidden="true">
+
+        <div class="career-success-overlay"></div>
+
+        <div class="career-success-box" role="dialog" aria-modal="true" aria-labelledby="careerSuccessTitle">
+
+            <button type="button" class="career-success-close" id="careerSuccessClose" aria-label="Close">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+            <div class="career-success-icon" aria-hidden="true">
+                <i class="fa-solid fa-check"></i>
+            </div>
+
+            <h3 id="careerSuccessTitle">
+                Application Submitted Successfully
+            </h3>
+
+            <p>
+                Thank you for your application. We have received
+                your details and CV. Our team will review your
+                application and get back to you if your profile
+                matches an opportunity.
+            </p>
+
+            <button type="button" class="career-success-btn" id="careerSuccessBtn">
+                Close
+            </button>
+
+        </div>
+
+    </div>
 
 
 
@@ -1465,8 +1512,10 @@
                             <i class="fa-solid fa-location-dot"></i>
 
                             <span>
-                                123 Construction Street,<br>
-                                Coimbatore - 641 002, India
+                                Dindigul,
+                                Opposite Parson Court Hotel,
+                                Tamil Nadu, India
+
                             </span>
                         </li>
 
@@ -1474,15 +1523,15 @@
                             <i class="fa-solid fa-phone"></i>
 
                             <a href="tel:+919876543210">
-                                +91 98765 43210
+                                +91 63833 36040
                             </a>
                         </li>
 
                         <li>
                             <i class="fa-solid fa-envelope"></i>
 
-                            <a href="mailto:info@2mconstruction.com">
-                                info@2mconstruction.com
+                            <a href="mailto:2mconstruction@gmail.com">
+                                2mconstruction@gmail.com
                             </a>
                         </li>
 
@@ -1511,16 +1560,8 @@
                             <i class="fa-brands fa-instagram"></i>
                         </a>
 
-                        <a href="#" aria-label="LinkedIn">
-                            <i class="fa-brands fa-linkedin-in"></i>
-                        </a>
-
                         <a href="#" aria-label="YouTube">
                             <i class="fa-brands fa-youtube"></i>
-                        </a>
-
-                        <a href="#" aria-label="X">
-                            <i class="fa-brands fa-x-twitter"></i>
                         </a>
 
                     </div>

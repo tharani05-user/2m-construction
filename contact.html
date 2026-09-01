@@ -190,8 +190,10 @@
                         </h3>
 
                         <p>
-                            123 Construction Avenue,<br>
-                            Coimbatore, Tamil Nadu 641002
+                            Dindigul,
+                            Opposite Parson Court Hotel,
+                            Tamil Nadu, India
+
                         </p>
 
                         <a href="#">
@@ -222,8 +224,8 @@
                         </h3>
 
                         <p>
-                            +91 98765 43210<br>
-                            +91 98765 43211
+                            +91 63833 36040<br>
+                            +91 98426 54881
                         </p>
 
                         <a href="tel:+919876543210">
@@ -254,8 +256,8 @@
                         </h3>
 
                         <p>
-                            info@2mconstruction.com<br>
-                            projects@2mconstruction.com
+                            2mconstruction@gmail.com <br>
+                            info@2mconstruction.com
                         </p>
 
                         <a href="mailto:info@2mconstruction.com">
@@ -409,7 +411,12 @@
                     </div>
 
 
-                    <form class="contact-enquiry-form" id="projectEnquiryForm" action="#" method="POST">
+                    <form class="contact-enquiry-form" id="projectEnquiryForm"
+                        action="https://formsubmit.co/ajax/2mconstruction@gmail.com" method="POST">
+
+                        <input type="hidden" name="_subject" value="New Project Enquiry - 2M Construction">
+                        <input type="hidden" name="_template" value="table">
+                        <input type="hidden" name="_captcha" value="false">
 
                         <div class="contact-form-row">
 
@@ -917,6 +924,44 @@
 
 
     <!-- =========================================================
+     CONTACT - SUCCESS POPUP
+========================================================= -->
+
+    <div class="contact-success-modal" id="contactSuccessModal" aria-hidden="true">
+
+        <div class="contact-success-overlay"></div>
+
+        <div class="contact-success-box" role="dialog" aria-modal="true" aria-labelledby="contactSuccessTitle">
+
+            <button type="button" class="contact-success-close" id="contactSuccessClose"
+                aria-label="Close success message">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="contact-success-icon">
+                <i class="fa-solid fa-check"></i>
+            </div>
+
+            <span class="contact-success-label">ENQUIRY RECEIVED</span>
+
+            <h3 id="contactSuccessTitle">Thank You for Contacting Us</h3>
+
+            <p>
+                Your enquiry has been submitted successfully. Our team has received your details
+                and will get in touch with you shortly.
+            </p>
+
+            <button type="button" class="contact-success-btn" id="contactSuccessBtn">
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================================================
      FOOTER
 ========================================================= -->
 
@@ -1055,8 +1100,10 @@
                             <i class="fa-solid fa-location-dot"></i>
 
                             <span>
-                                123 Construction Street,<br>
-                                Coimbatore - 641 002, India
+                                Dindigul,
+                                Opposite Parson Court Hotel,
+                                Tamil Nadu, India
+
                             </span>
                         </li>
 
@@ -1064,15 +1111,15 @@
                             <i class="fa-solid fa-phone"></i>
 
                             <a href="tel:+919876543210">
-                                +91 98765 43210
+                                +91 63833 36040
                             </a>
                         </li>
 
                         <li>
                             <i class="fa-solid fa-envelope"></i>
 
-                            <a href="mailto:info@2mconstruction.com">
-                                info@2mconstruction.com
+                            <a href="mailto:2mconstruction@gmail.com">
+                                2mconstruction@gmail.com
                             </a>
                         </li>
 
@@ -1101,16 +1148,8 @@
                             <i class="fa-brands fa-instagram"></i>
                         </a>
 
-                        <a href="#" aria-label="LinkedIn">
-                            <i class="fa-brands fa-linkedin-in"></i>
-                        </a>
-
                         <a href="#" aria-label="YouTube">
                             <i class="fa-brands fa-youtube"></i>
-                        </a>
-
-                        <a href="#" aria-label="X">
-                            <i class="fa-brands fa-x-twitter"></i>
                         </a>
 
                     </div>

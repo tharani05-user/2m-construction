@@ -1050,8 +1050,8 @@
                                     Call Us
                                 </span>
 
-                                <a href="tel:+919876543210">
-                                    +91 98765 43210
+                                <a href="tel:+916383336040">
+                                    +91 63833 36040
                                 </a>
                             </div>
 
@@ -1069,8 +1069,8 @@
                                     Email Us
                                 </span>
 
-                                <a href="mailto:info@2mconstruction.in">
-                                    info@2mconstruction.in
+                                <a href="mailto:2mconstruction@gmail.com">
+                                    2mconstruction@gmail.com
                                 </a>
                             </div>
 
@@ -1084,7 +1084,16 @@
                 <!-- Right Form -->
                 <div class="service-enquiry-form-wrapper">
 
-                    <form class="service-enquiry-form" id="serviceEnquiryForm" action="#" method="POST">
+                    <form class="service-enquiry-form" id="serviceEnquiryForm"
+                        action="https://formsubmit.co/2mconstruction@gmail.com" method="POST">
+
+                        <input type="hidden" name="_subject" value="New Project Enquiry - 2M Construction">
+
+                        <input type="hidden" name="_template" value="table">
+
+                        <input type="hidden" name="_captcha" value="false">
+
+                        <input type="hidden" name="_next" value="services.html?enquiry=success">
 
                         <div class="enquiry-form-heading">
 
@@ -1347,8 +1356,10 @@
                             <i class="fa-solid fa-location-dot"></i>
 
                             <span>
-                                123 Construction Street,<br>
-                                Coimbatore - 641 002, India
+                                Dindigul,
+                                Opposite Parson Court Hotel,
+                                Tamil Nadu, India
+
                             </span>
                         </li>
 
@@ -1356,15 +1367,15 @@
                             <i class="fa-solid fa-phone"></i>
 
                             <a href="tel:+919876543210">
-                                +91 98765 43210
+                                +91 63833 36040
                             </a>
                         </li>
 
                         <li>
                             <i class="fa-solid fa-envelope"></i>
 
-                            <a href="mailto:info@2mconstruction.com">
-                                info@2mconstruction.com
+                            <a href="mailto:2mconstruction@gmail.com">
+                                2mconstruction@gmail.com
                             </a>
                         </li>
 
@@ -1393,16 +1404,8 @@
                             <i class="fa-brands fa-instagram"></i>
                         </a>
 
-                        <a href="#" aria-label="LinkedIn">
-                            <i class="fa-brands fa-linkedin-in"></i>
-                        </a>
-
                         <a href="#" aria-label="YouTube">
                             <i class="fa-brands fa-youtube"></i>
-                        </a>
-
-                        <a href="#" aria-label="X">
-                            <i class="fa-brands fa-x-twitter"></i>
                         </a>
 
                     </div>
@@ -1429,6 +1432,61 @@
     </footer>
 
     <script src="js/main.js"></script>
+
+    <script>
+        (function () {
+            const form = document.getElementById("serviceEnquiryForm");
+            const message = document.getElementById("enquiryFormMessage");
+
+            if (!form || !message) {
+                return;
+            }
+
+            const submitButton = form.querySelector(".service-enquiry-submit");
+            const successMessage = "Thank you! Your enquiry has been submitted successfully. Our team will get back to you shortly.";
+            const errorMessage = "Sorry, we couldn't send your enquiry right now. Please try again in a moment.";
+            const successUrl = new URL(
+                form.querySelector('input[name="_next"]').value,
+                window.location.href
+            ).href;
+
+            form.addEventListener("submit", async function (event) {
+                event.preventDefault();
+
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+
+                if (submitButton) {
+                    submitButton.disabled = true;
+                    submitButton.setAttribute("aria-busy", "true");
+                }
+
+                message.textContent = "";
+
+                try {
+                    await fetch(form.action, {
+                        method: "POST",
+                        body: new FormData(form),
+                        mode: "no-cors"
+                    });
+
+                    window.alert(successMessage);
+                    window.location.href = successUrl;
+                } catch (error) {
+                    message.textContent = errorMessage;
+                    message.setAttribute("role", "alert");
+                    message.setAttribute("aria-live", "assertive");
+
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        submitButton.removeAttribute("aria-busy");
+                    }
+                }
+            });
+        })();
+    </script>
 
 </body>
 
